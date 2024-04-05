@@ -190,6 +190,7 @@ document.addEventListener("DOMContentLoaded", function() {
             [255, 182, 193], // Cotton Candy Pink
             [255, 192, 203], // Lavender Pink
             ];
+      
         // Randomly select an RGB value from the array
         const randomIndex = Math.floor(Math.random() * pinkShades.length);
         const randomPink = pinkShades[randomIndex];
