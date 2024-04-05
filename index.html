@@ -10,9 +10,9 @@
     <div class="container">
         <h1>Man! I feel like a snake! x<span id="score">0</span>!!!</h1>
         <div class="wrapper">
-            <img src="regina.jpg" alt="Regina">
+            <img src="regina.png" alt="Regina">
             <canvas id="gameCanvas" width="600" height="400"></canvas>
-            <img src="sharpay.jpg" alt="Sharpay">
+            <img src="sharpay.png" alt="Sharpay">
         </div>
         <div id="controls">
             <button class="arrow-btn" id="upButton">&#8593;</button>
@@ -22,8 +22,16 @@
                 <button class="arrow-btn" id="rightButton">&#8594;</button>
             </div>
         </div>
-        <button id="fullscreenButton">Fullscreen</button>
     </div>
+
+    <!-- Score Window -->
+    <div id="scoreWindow" class="score-window">
+        <h2>Game Over!</h2>
+        <p>Your final score is: <span id="finalScore">0</span></p>
+        <button id="restartButton">Close</button>
+    </div>
+
     <script src="static/script.js"></script>
 </body>
 </html>
+

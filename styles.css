@@ -9,7 +9,7 @@ body, html {
 .container {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center align other items */
+    align-items: center;
     text-align: center;
 }
 
@@ -21,10 +21,8 @@ canvas {
     margin-right: auto; /* Push canvas to the left */
     margin-bottom: 20px;
     max-width: 600px; /* Set maximum canvas width */
-}
-
-#fullscreenButton {
-    margin-top: 20px;
+    border: 8px solid rgb(177,156,217); 
+    border-radius: 10px; /* Rounded corners */
 }
 
 .image-container {
@@ -38,4 +36,45 @@ img {
     max-width: 200px; /* Adjust maximum width of images */
 }
 
-/* Additional styling as needed */
+
+
+/* Styles for the score window */
+.score-window {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(255, 153, 204); 
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+    z-index: 9999;
+}
+
+.score-window h2 {
+    margin-top: 0;
+}
+
+.score-window button {
+    margin-top: 10px;   
+}
+
+#controls {
+    margin-top: -10px; /* Adjust top margin to move the buttons closer */
+}
+
+.arrow-btn {
+    color: black; /* Set text color */
+    background-color: rgb(230, 230, 250); /* Set background color to light lavender */
+    border: 2px solid rgb(177, 156, 217); /* Set border color */
+    border-radius: 5px; /* Rounded corners */
+    width: 30px; /* Set button width */
+    height: 30px; /* Set button height */
+    font-size: 20px; /* Set font size */
+    cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+
+
