@@ -1,0 +1,41 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center align other items */
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+canvas {
+    margin-right: auto; /* Push canvas to the left */
+    margin-bottom: 20px;
+    max-width: 600px; /* Set maximum canvas width */
+}
+
+#fullscreenButton {
+    margin-top: 20px;
+}
+
+.image-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 800px; /* Limit the width of the wrapper to prevent images from overflowing */
+}
+
+img {
+    max-width: 200px; /* Adjust maximum width of images */
+}
+
+/* Additional styling as needed */
