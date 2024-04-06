@@ -18,11 +18,7 @@
                 <div class="leaderboard-wrapper">
                     <div id="leaderboard" class="leaderboard">
                         <h2>All Stars!!!</h2>
-                        <p>1. Leonie: 89</p>
-                        <p>2. Alessia: 21</p>
-                        <p>3. </p>
-                        <p>4. </p>
-                        <p>5. </p>
+                        <table id="leaderboardTable"></table> <!-- Empty table to display leaderboard -->
                     </div>
                 </div>
                 <img src="sharpay.png" alt="Sharpay" class="sharpay-image">
@@ -47,5 +43,28 @@
     </div>
 
     <script src="static/script.js"></script>
+    <script>
+        // Fetch and display leaderboard data from CSV
+        fetch('leaderboard.csv')
+            .then(response => response.text())
+            .then(data => {
+                const rows = data.split('\n');
+                let html = '';
+                for (let i = 0; i < rows.length; i++) {
+                    const cells = rows[i].split(',');
+                    html += '<tr>';
+                    for (let j = 0; j < cells.length; j++) {
+                        if (i === 0) {
+                            html += '<th>' + cells[j] + '</th>';
+                        } else {
+                            html += '<td>' + cells[j] + '</td>';
+                        }
+                    }
+                    html += '</tr>';
+                }
+                document.getElementById('leaderboardTable').innerHTML = html;
+            })
+            .catch(error => console.error('Error:', error));
+    </script>
 </body>
 </html>
