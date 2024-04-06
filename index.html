@@ -9,10 +9,24 @@
 <body>
     <div class="container">
         <h1>Man! I feel like a snake! x<span id="score">0</span>!!!</h1>
-        <div class="wrapper">
-            <img src="regina.jpg" alt="Regina">
+        <div class="game-wrapper">
+            <div class="left-side-content">
+                <img src="regina.png" alt="Regina" class="regina-image"> 
+            </div>
             <canvas id="gameCanvas" width="600" height="400"></canvas>
-            <img src="sharpay.jpg" alt="Sharpay">
+            <div class="right-side-content">
+                <div class="leaderboard-wrapper">
+                    <div id="leaderboard" class="leaderboard">
+                        <h2>All Stars!!!</h2>
+                        <p>1. Leonie: 89</p>
+                        <p>2. Alessia: 21</p>
+                        <p>3. </p>
+                        <p>4. </p>
+                        <p>5. </p>
+                    </div>
+                </div>
+                <img src="sharpay.png" alt="Sharpay" class="sharpay-image">
+            </div>
         </div>
         <div id="controls">
             <button class="arrow-btn" id="upButton">&#8593;</button>
@@ -22,8 +36,16 @@
                 <button class="arrow-btn" id="rightButton">&#8594;</button>
             </div>
         </div>
-        <button id="fullscreenButton">Fullscreen</button>
     </div>
+
+    <!-- Score Window -->
+    <div id="scoreWindow" class="score-window">
+        <h2>Game Over!!!</h2>
+        <p>Your final score is: <span id="finalScore">0</span></p>
+        <p>Please contact Leonie to be added to the leaderboard!</p>
+        <button id="restartButton">Close</button>
+    </div>
+
     <script src="static/script.js"></script>
 </body>
 </html>
