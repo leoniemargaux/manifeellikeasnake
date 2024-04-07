@@ -95,7 +95,7 @@ canvas {
     border-radius: 5px; 
     padding: 5px;
     margin: 0;
-    text-align: right;
+    text-align: center;
 }
 
 .leaderboard-wrapper p {
@@ -104,6 +104,10 @@ canvas {
 
 .leaderboard-wrapper h2 {
     margin: 0;
+}
+
+.leaderboard-wrapper td {
+    text-alight: right:
 }
 
 .sharpay-image {
