@@ -126,6 +126,10 @@ canvas {
     margin: 0;
 }
 
+.leaderboard-wrapper td {
+    text-align: right; 
+}
+
 .align-right {
     text-align: right;
 }
