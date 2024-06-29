@@ -5,7 +5,6 @@ const BACKGROUND_COLOUR = "#E6E6FA"; // Lavender
 const SNAKE_COLOUR = "#F984EF"; // Light purple
 const FOOD_COLOUR = "#00CCCC"; // Dark cyan
 const BLOCK_SIZE = 20;
-const SNAKE_SPEED = 1;
 const DIRECTIONS = [
     { x: 0, y: -1 }, // UP
     { x: 0, y: 1 },  // DOWN
@@ -22,6 +21,7 @@ class Snake {
         this.gameOver = false;
         this.game_over_sound = new Audio("static/sounds/explode.mp3");
         this.eat_sounds = this.loadEatSounds();
+        this.lKeyCount = 0; // Initialize lKeyCount
     }
 
     initializeSnake() {
@@ -100,6 +100,11 @@ class Snake {
         this.game_over_sound.play();
     }
 
+    resetToOneBubble() {
+        this.length = 1;
+        this.positions = [this.getHeadPosition()];
+    }
+
     draw(ctx) {
         ctx.fillStyle = this.color;
         this.positions.forEach(p => {
@@ -122,6 +127,55 @@ class Snake {
                 break;
             case "ArrowRight":
                 this.turn({ x: 1, y: 0 });
+                break;
+            case "l":
+            case "L":
+                this.resetToOneBubble();
+                this.lKeyCount++; // Increment lKeyCount
+                break;
+            case "w":
+            case "W":
+                if (this.direction.y !== 1) { // Only change to UP if not currently moving DOWN
+                    this.turn({ x: 0, y: -1 });
+                }
+                setTimeout(() => {  // Queue the left turn after a short delay
+                    if (this.direction.x !== 1) { // Only change to LEFT if not currently moving RIGHT
+                        this.turn({ x: -1, y: 0 });
+                    }
+                }, 50);
+                break;
+            case "e":
+            case "E":
+                if (this.direction.y !== 1) { // Only change to UP if not currently moving DOWN
+                    this.turn({ x: 0, y: -1 });
+                }
+                setTimeout(() => {  // Queue the right turn after a short delay
+                    if (this.direction.x !== -1) { // Only change to RIGHT if not currently moving LEFT
+                        this.turn({ x: 1, y: 0 });
+                    }
+                }, 50);
+                break;
+            case "s":
+            case "S":
+                if (this.direction.y !== -1) { // Only change to DOWN if not currently moving UP
+                    this.turn({ x: 0, y: 1 });
+                }
+                setTimeout(() => {  // Queue the left turn after a short delay
+                    if (this.direction.x !== 1) { // Only change to LEFT if not currently moving RIGHT
+                        this.turn({ x: -1, y: 0 });
+                    }
+                }, 50);
+                break;
+            case "d":
+            case "D":
+                if (this.direction.y !== -1) { // Only change to DOWN if not currently moving UP
+                    this.turn({ x: 0, y: 1 });
+                }
+                setTimeout(() => {  // Queue the right turn after a short delay
+                    if (this.direction.x !== -1) { // Only change to RIGHT if not currently moving LEFT
+                        this.turn({ x: 1, y: 0 });
+                    }
+                }, 50);
                 break;
         }
     }
@@ -223,8 +277,24 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function updateScoreDisplay(snake) {
-        document.getElementById('score').textContent = snake.score;
+        document.getElementById('score').textContent = snake.score;      
+        // Display lKeyCount message if lKeyCount > 0
+        const lKeyPressMessage = document.getElementById('lKeyPressMessage');
+        const ContactMessage = document.getElementById('ContactMessage');
+        const ServerMessage = document.getElementById('ServerMessage');
+        const lKeyCount = document.getElementById('lKeyCount');
+        if (snake.lKeyCount > 0) {
+            lKeyPressMessage.style.display = 'block';
+            ContactMessage.style.display = 'none';
+            ServerMessage.style.display = 'none';
+            lKeyCount.textContent = snake.lKeyCount;
+        } else {
+            lKeyPressMessage.style.display = 'none';
+            ContactMessage.style.display = 'block';
+            ServerMessage.style.display = 'block';
+        }
     }
+
 
     function displayFinalScore() {
         scoreWindow.style.display = "block";
