@@ -342,11 +342,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 snake.draw(ctx);
                 food.draw(ctx);
                 updateScoreDisplay(snake);
-
                 if (snake.score == 0) {
                     displayFinalScore();
                     snake.scores = [];
-                    snake.score = 1;
+                    snake.score = 1; 
+                }
+                if (snake.score == 2) {
+                    snake.lKeyCount = 0;
                 }
             }
             requestAnimationFrame(gameLoop);
