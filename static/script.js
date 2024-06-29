@@ -15,6 +15,7 @@ const DIRECTIONS = [
 class Snake {
     constructor() {
         this.initializeSnake();
+        this.keySequence = "";
         this.color = SNAKE_COLOUR;
         this.score = 1;
         this.scores = [];
@@ -127,6 +128,17 @@ class Snake {
                 break;
             case "ArrowRight":
                 this.turn({ x: 1, y: 0 });
+                break;
+            case "g":
+            case "i":
+            case "a":
+            case "n":
+            case "i":
+                this.keySequence += event.key.toLowerCase();
+                if (this.keySequence === "gianni") {
+                    this.score += 500;
+                    this.keySequence = ""; // Reset key sequence tracker
+                }
                 break;
             case "l":
             case "L":
