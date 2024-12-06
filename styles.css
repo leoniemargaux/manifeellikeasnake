@@ -14,7 +14,7 @@ body, html {
 }
 
 h1 {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 canvas {
@@ -57,7 +57,7 @@ canvas {
 }
 
 #controls {
-    margin-top: -10px; 
+    margin-top: -20px; 
 }
 
 .arrow-btn {
