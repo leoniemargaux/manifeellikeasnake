@@ -244,14 +244,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.getElementById("pauseButton").addEventListener("click", togglePause);
     document.getElementById("robotButton").addEventListener("click", () => automateGame(snake, food));
-
-    function setupButtonControls(snake) {
-        document.getElementById("upButton").addEventListener("click", () => snake.turn({ x: 0, y: -1 }));
-        document.getElementById("downButton").addEventListener("click", () => snake.turn({ x: 0, y: 1 }));
-        document.getElementById("leftButton").addEventListener("click", () => snake.turn({ x: -1, y: 0 }));
-        document.getElementById("rightButton").addEventListener("click", () => snake.turn({ x: 1, y: 0 }));
-    }
-
+    
     function togglePause() {
         isPaused = !isPaused;
         document.getElementById("pauseButton").textContent = isPaused ? "Resume" : "Pause";
