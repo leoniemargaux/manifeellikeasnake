@@ -56,21 +56,6 @@ canvas {
     border-radius: 5px; 
 }
 
-#controls {
-    margin-top: -10px; 
-}
-
-.arrow-btn {
-    color: black; 
-    background-color: rgb(230, 230, 250); 
-    border: 2px solid rgb(177, 156, 217); 
-    border-radius: 5px; 
-    width: 30px; 
-    height: 30px; 
-    font-size: 20px; 
-    cursor: pointer; 
-}
-
 .game-wrapper {
     display: flex;
     justify-content: center; 
