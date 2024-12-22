@@ -129,66 +129,6 @@ class Snake {
             case "ArrowRight":
                 this.turn({ x: 1, y: 0 });
                 break;
-            case "g":
-            case "i":
-            case "a":
-            case "n":
-            case "i":
-                this.keySequence += event.key.toLowerCase();
-                if (this.keySequence === "gianni") {
-                    this.score += 500;
-                    this.keySequence = ""; // Reset key sequence tracker
-                }
-                break;
-            case "l":
-            case "L":
-                this.resetToOneBubble();
-                this.lKeyCount++; // Increment lKeyCount
-                break;
-            case "w":
-            case "W":
-                if (this.direction.y !== 1) { // Only change to UP if not currently moving DOWN
-                    this.turn({ x: 0, y: -1 });
-                }
-                setTimeout(() => {  // Queue the left turn after a short delay
-                    if (this.direction.x !== 1) { // Only change to LEFT if not currently moving RIGHT
-                        this.turn({ x: -1, y: 0 });
-                    }
-                }, 50);
-                break;
-            case "e":
-            case "E":
-                if (this.direction.y !== 1) { // Only change to UP if not currently moving DOWN
-                    this.turn({ x: 0, y: -1 });
-                }
-                setTimeout(() => {  // Queue the right turn after a short delay
-                    if (this.direction.x !== -1) { // Only change to RIGHT if not currently moving LEFT
-                        this.turn({ x: 1, y: 0 });
-                    }
-                }, 50);
-                break;
-            case "s":
-            case "S":
-                if (this.direction.y !== -1) { // Only change to DOWN if not currently moving UP
-                    this.turn({ x: 0, y: 1 });
-                }
-                setTimeout(() => {  // Queue the left turn after a short delay
-                    if (this.direction.x !== 1) { // Only change to LEFT if not currently moving RIGHT
-                        this.turn({ x: -1, y: 0 });
-                    }
-                }, 50);
-                break;
-            case "d":
-            case "D":
-                if (this.direction.y !== -1) { // Only change to DOWN if not currently moving UP
-                    this.turn({ x: 0, y: 1 });
-                }
-                setTimeout(() => {  // Queue the right turn after a short delay
-                    if (this.direction.x !== -1) { // Only change to RIGHT if not currently moving LEFT
-                        this.turn({ x: 1, y: 0 });
-                    }
-                }, 50);
-                break;
         }
     }
 }
@@ -240,21 +180,68 @@ document.addEventListener("DOMContentLoaded", function () {
     let automateInterval;
 
     document.addEventListener("keydown", event => snake.handleKeys(event));
-    setupButtonControls(snake);
 
     document.getElementById("pauseButton").addEventListener("click", togglePause);
     document.getElementById("robotButton").addEventListener("click", () => automateGame(snake, food));
 
-    function setupButtonControls(snake) {
-        document.getElementById("upButton").addEventListener("click", () => snake.turn({ x: 0, y: -1 }));
-        document.getElementById("downButton").addEventListener("click", () => snake.turn({ x: 0, y: 1 }));
-        document.getElementById("leftButton").addEventListener("click", () => snake.turn({ x: -1, y: 0 }));
-        document.getElementById("rightButton").addEventListener("click", () => snake.turn({ x: 1, y: 0 }));
-    }
-
     function togglePause() {
         isPaused = !isPaused;
         document.getElementById("pauseButton").textContent = isPaused ? "Resume" : "Pause";
+    }
+
+    function floodFill(snake, start) {
+        const visited = new Set();
+        const queue = [start];
+        let count = 0;
+
+        while (queue.length) {
+            const { x, y } = queue.pop();
+            const key = `${x},${y}`;
+
+            if (visited.has(key)) continue;
+            visited.add(key);
+
+            if (snake.positions.some(pos => pos.x === x && pos.y === y)) continue;
+
+            count++;
+
+            for (const dir of DIRECTIONS) {
+                queue.push({
+                    x: (x + dir.x * BLOCK_SIZE + SCREEN_WIDTH) % SCREEN_WIDTH,
+                    y: (y + dir.y * BLOCK_SIZE + SCREEN_HEIGHT) % SCREEN_HEIGHT
+                });
+            }
+        }
+
+        return count;
+    }
+
+    function findSafeDirection(snake, food) {
+        const head = snake.getHeadPosition();
+        const foodPos = food.position;
+
+        const moves = DIRECTIONS.map(dir => {
+            const nextX = (head.x + dir.x * BLOCK_SIZE + SCREEN_WIDTH) % SCREEN_WIDTH;
+            const nextY = (head.y + dir.y * BLOCK_SIZE + SCREEN_HEIGHT) % SCREEN_HEIGHT;
+            const reachable = floodFill(snake, { x: nextX, y: nextY });
+
+            return {
+                direction: dir,
+                distanceToFood: Math.abs(nextX - foodPos.x) + Math.abs(nextY - foodPos.y),
+                reachable
+            };
+        });
+
+        const safeMoves = moves.filter(move => move.reachable > 0);
+
+        if (safeMoves.length === 0) return snake.direction;
+
+        return safeMoves.reduce((best, move) =>
+            move.reachable > best.reachable ||
+            (move.reachable === best.reachable && move.distanceToFood < best.distanceToFood)
+                ? move
+                : best
+        ).direction;
     }
 
     function automateGame(snake, food) {
@@ -265,27 +252,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
             if (!isPaused) {
-                const direction = findGreedyDirection(snake, food);
+                const direction = findSafeDirection(snake, food);
                 snake.turn(direction);
-                updateScoreDisplay(snake);
             }
         }, 1000 / 20);
-    }
-
-    function findGreedyDirection(snake, food) {
-        const head = snake.getHeadPosition();
-        const foodPos = food.position;
-        let distances = DIRECTIONS.map(dir => ({
-            direction: dir,
-            distance: Math.abs((head.x + dir.x * BLOCK_SIZE - foodPos.x) % SCREEN_WIDTH) +
-                Math.abs((head.y + dir.y * BLOCK_SIZE - foodPos.y) % SCREEN_HEIGHT)
-        }));
-
-        distances = distances.filter(item => !snake.positions.some(pos => pos.x === (head.x + item.direction.x * BLOCK_SIZE) % SCREEN_WIDTH && pos.y === (head.y + item.direction.y * BLOCK_SIZE) % SCREEN_HEIGHT));
-
-        if (distances.length === 0) return snake.direction;
-
-        return distances.reduce((min, item) => item.distance < min.distance ? item : min).direction;
     }
 
     function updateScoreDisplay(snake) {
@@ -307,8 +277,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-
-    function displayFinalScore() {
+        function displayFinalScore() {
         scoreWindow.style.display = "block";
         document.getElementById("finalScore").textContent = Math.max(...snake.scores);
         document.body.style.backgroundColor = getRandomPinkShade();
@@ -333,7 +302,8 @@ document.addEventListener("DOMContentLoaded", function () {
         startGame();
     });
 
-    function gameLoop() {
+
+        function gameLoop() {
         setTimeout(() => {
             if (!isPaused) {
                 snake.move(food);
